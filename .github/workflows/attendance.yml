@@ -1,0 +1,34 @@
+name: Run Attendance Test
+
+on:
+  schedule:
+    - cron: '45 3 * * 1-5'   # 9:30 AM Nepal time
+  workflow_dispatch:
+
+jobs:
+  run-test:
+    runs-on: ubuntu-latest
+
+    env:
+      MICROSOFT_EMAIL: ${{ secrets.MICROSOFT_EMAIL }}
+      MICROSOFT_PASSWORD: ${{ secrets.MICROSOFT_PASSWORD }}
+      HRIS_ID: ${{ secrets.HRIS_ID }}
+      HRIS_PASSWORD: ${{ secrets.HRIS_PASSWORD }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run ONLY one test
+        run: npx playwright test tests/attendance.spec.js

@@ -1,64 +1,9 @@
+import 'dotenv/config';
+
 import { test, expect } from "@playwright/test";
 import { login } from "../utils/login-utils";
 
-test.describe("Login Tests", () => {
-  test("valid login", async ({ page }) => {
-    await login({ page });
-
-    await page.locator('[href="/inventory/products"]').click();
-
-    await Promise.all([page.waitForResponse((r) => r.url().includes("api/"))]);
-
-    await page.getByRole("button", { name: "Inactive" }).click();
-
-    await Promise.all([page.waitForResponse((r) => r.url().includes("api/"))]);
-
-    const row = page
-      .locator(".ant-table-row.ant-table-row-level-0.cursor-pointer")
-      .nth(0);
-
-    const selectedProductId = await row.locator("td").nth(1).innerText();
-
-    await row.locator("td").last().locator("button").click();
-
-    await page.waitForTimeout(1000);
-
-    const modalBody = page.locator(".ant-modal-content");
-
-    await modalBody.getByRole("button", { name: "Activate" }).click();
-
-    await Promise.all([page.waitForResponse((r) => r.url().includes("api/"))]);
-
-    await page.getByRole("button", { name: "Active" }).first().click();
-
-    await Promise.all([page.waitForResponse((r) => r.url().includes("api/"))]);
-
-    console.log("selectedProductId", selectedProductId);
-    await expect(page.getByText(selectedProductId).first()).toBeAttached();
-
-    // await expect(page).toHaveURL(/dashboard/);
-  });
-
-  test("invalid login", async ({ page }) => {
-    await page.goto("https://dev-iam.providhy.com/login");
-
-    await page.locator('[data-cy="tenantId"]').fill("248413");
-    await page.locator('[data-cy="username"]').fill("sushant1");
-    await page.locator('[data-cy="password"]').fill("Admin@1234");
-
-    await page.locator('[data-cy="login"]').click();
-    await Promise.all([
-      page.waitForResponse((r) => r.url().includes("api/token")),
-    ]);
-
-    await expect(
-      page
-        .getByText(
-          "We couldn't verify your login information. Please check your Tenant ID, username, and password.",
-        )
-        .first(),
-    ).toBeVisible();
-  });
+test.describe("Tests", () => {
 
   test("test attendance", async ({ page }) => {
     await page.goto("https://hris.vidhypro.com/");
@@ -66,11 +11,11 @@ test.describe("Login Tests", () => {
     await page.locator('[type="submit"]').click();
     await page
       .locator('[name="loginfmt"]')
-      .fill("xxxx.xxxx@vidhypro.com");  // vidhypro email
+      .fill(process.env.MICROSOFT_EMAIL || "");  // vidhypro email
 
     await page.locator('[type="submit"]').click();
 
-    await page.locator('[name="passwd"]').fill("xxxxx"); // vidhypro password
+    await page.locator('[name="passwd"]').fill(process.env.MICROSOFT_PASSWORD || ""); // vidhypro password
 
     await page.locator('input[type="submit"]').click();
 
@@ -84,8 +29,8 @@ test.describe("Login Tests", () => {
 
     await Promise.all([page.waitForResponse((r) => r.url().includes(""))]);
 
-    await page.locator('[id="LoginID"]').nth(1).fill("xxxx"); //employee id
-    await page.locator('[id="LoginPassword"]').nth(1).fill("xxxxx"); //employee password
+    await page.locator('[id="LoginID"]').nth(1).fill(process.env.HRIS_ID || ""); //employee id
+    await page.locator('[id="LoginPassword"]').nth(1).fill(process.env.HRIS_PASSWORD || ""); //employee password
     await page.locator('[id="Direction"]').selectOption('In'); //check in or out
     // await page.locator('[id="direction"]').selectOption('Out'); 
 
