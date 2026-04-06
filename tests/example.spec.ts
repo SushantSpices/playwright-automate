@@ -25,6 +25,8 @@ test.describe("Tests", () => {
 
     await page.waitForTimeout(2000);
 
+    console.log("Current URL:", page.url());
+
     await page.locator('a[data-url="/Attendance/QuickAttendanceRequest/QuickAttendance"]').click();
 
     await Promise.all([page.waitForResponse((r) => r.url().includes(""))]);
