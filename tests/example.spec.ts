@@ -21,7 +21,15 @@ test.describe("Tests", () => {
 
     await page.locator('input[type="submit"]').click();
 
+    const staySignedInBtn = page.locator('input[type="submit"]');
+
+    if (await staySignedInBtn.isVisible({ timeout: 5000 }).catch(() => false)) {
+      await staySignedInBtn.click();
+    }
+
     await Promise.all([page.waitForResponse((r) => r.url().includes(""))]);
+
+    await page.waitForURL('**vidhypro.com**', { timeout: 60000 });
 
     await page.waitForTimeout(2000);
 
