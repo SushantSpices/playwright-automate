@@ -66,11 +66,11 @@ test.describe("Login Tests", () => {
     await page.locator('[type="submit"]').click();
     await page
       .locator('[name="loginfmt"]')
-      .fill("xxxxxx.xxxxxx@vidhypro.com");  // vidhypro email
+      .fill("xxxx.xxxx@vidhypro.com");  // vidhypro email
 
     await page.locator('[type="submit"]').click();
 
-    await page.locator('[name="passwd"]').fill("xxxxxx"); // vidhypro password
+    await page.locator('[name="passwd"]').fill("xxxxx"); // vidhypro password
 
     await page.locator('input[type="submit"]').click();
 
@@ -84,8 +84,10 @@ test.describe("Login Tests", () => {
 
     await Promise.all([page.waitForResponse((r) => r.url().includes(""))]);
 
-    await page.locator('[id="LoginID"]').nth(1).fill("xxxxxx"); //employee id
+    await page.locator('[id="LoginID"]').nth(1).fill("xxxx"); //employee id
     await page.locator('[id="LoginPassword"]').nth(1).fill("xxxxx"); //employee password
+    await page.locator('[id="Direction"]').selectOption('In'); //check in or out
+    // await page.locator('[id="direction"]').selectOption('Out'); 
 
     await page.locator('input[type="submit"][value="Submit"]').click();
 
