@@ -49,6 +49,12 @@ test.describe("HRIS Attendance Test", () => {
       ]);
     }
 
+    
+    const randomLoopCount = Math.floor(Math.random() * 3) + 1;
+    for (let i = 0; i < randomLoopCount; i++) {
+      console.log(`Random loop iteration ${i + 1}`);
+    }
+
     // Step 6: Ensure we are back on HRIS
     // await page.waitForURL('**https://hris.vidhypro.com**', { timeout: 60000 });
 

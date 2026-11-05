@@ -7,6 +7,8 @@ export const login = async ({ page }: { page: Page }) => {
 //   await page.locator('[data-cy="username"]').fill("sushant1");
 //   await page.locator('[data-cy="password"]').fill("Admin@123");
 
+  console.log(page, "remove this before comitting")
+
   await page.goto("https://uat-iam.providhy.com/login");
 
   await page.locator('[data-cy="tenantId"]').fill("044747");
